@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+
+  impersonator:
+    build:
+      context: ./bot
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    environment:
+      - APPLICATION_ID=${APPLICATION_ID}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - BOT_TOKEN=${BOT_TOKEN}
+      - AUTHOR_ID=${AUTHOR_ID}
+      - DB_PORT=${DB_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
