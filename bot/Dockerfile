@@ -8,6 +8,7 @@ COPY . .
 
 # Build the Go application
 RUN go build -o impersonator
+RUN go mod tidy
 
 # Specify the command to run when the container starts
 CMD ["./impersonator"]

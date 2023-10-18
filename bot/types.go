@@ -179,7 +179,6 @@ func (s *State) FindChain(chain *gomarkov.Chain, str string, prev1 string, prev2
 
 			gen, err := chain.Generate([]string{first, last})
 			if err == nil && !sameAsBefore(first, last) {
-				log.Println(first, last)
 				return gen, first, last, nil
 			}
 		}
@@ -192,7 +191,6 @@ func (s *State) FindChain(chain *gomarkov.Chain, str string, prev1 string, prev2
 
 			gen, err := chain.Generate([]string{last, first})
 			if err == nil && !sameAsBefore(last, first) {
-				log.Println(last, first)
 				return gen, last, first, nil
 			}
 		}
@@ -205,13 +203,11 @@ func (s *State) FindChain(chain *gomarkov.Chain, str string, prev1 string, prev2
 
 			gen, err := chain.Generate([]string{first, last})
 			if err == nil && !sameAsBefore(first, last) {
-				log.Println(first, last)
 				return gen, first, last, nil
 			}
 
 			gen, err = chain.Generate([]string{last, first})
 			if err == nil && !sameAsBefore(last, first) {
-				log.Println(last, first)
 				return gen, last, first, nil
 			}
 		}

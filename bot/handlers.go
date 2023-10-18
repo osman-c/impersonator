@@ -104,7 +104,7 @@ func InitializeCommands() {
 	})
 }
 
-func CommandHandler(session *discordgo.Session, i *discordgo.InteractionCreate) {
+func commandHandler(session *discordgo.Session, i *discordgo.InteractionCreate) {
 	state, err := getState(i.GuildID)
 	if err != nil {
 		log.Println(err)
@@ -249,7 +249,7 @@ func CommandHandler(session *discordgo.Session, i *discordgo.InteractionCreate) 
 	}
 }
 
-func MessageHandler(session *discordgo.Session, m *discordgo.MessageCreate) {
+func messageHandler(session *discordgo.Session, m *discordgo.MessageCreate) {
 	state, err := getState(m.GuildID)
 	if err != nil {
 		log.Println(err)
@@ -271,7 +271,6 @@ func MessageHandler(session *discordgo.Session, m *discordgo.MessageCreate) {
 
 	next := state.LastMessageAt.Add(time.Duration(state.Cooldown))
 	if time.Now().Before(next) {
-		log.Println("Message too recent")
 		return
 	}
 
@@ -317,5 +316,17 @@ func MessageHandler(session *discordgo.Session, m *discordgo.MessageCreate) {
 			log.Println(err)
 		}
 		return
+	}
+}
+
+func guildCreateHandler(s *discordgo.Session, g *discordgo.GuildCreate) {
+	state := makeDefaultState(g.Guild.ID)
+	_, err := coll.InsertOne(ctx, *state)
+	if err != nil {
+		log.Println(err)
+	}
+
+	for _, channel := range g.Channels {
+		s.ChannelMessageSend(channel.ID, "Impersonator just joined this server! Use '/set-user' to set a user to impersonate and use '/train' to train a markov chain.")
 	}
 }

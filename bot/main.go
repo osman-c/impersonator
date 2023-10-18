@@ -51,15 +51,19 @@ func main() {
 	log.Println("Done!")
 
 	log.Println("Initializing command handlers...")
-	session.AddHandler(CommandHandler)
+	session.AddHandler(commandHandler)
 	log.Println("Done!")
 
 	log.Println("Initializing message handlers...")
-	session.AddHandler(MessageHandler)
+	session.AddHandler(messageHandler)
 	log.Println("Done!")
 
+	log.Println("Initializing guild handlers...")
+	session.AddHandler(guildCreateHandler)
+	log.Println("Done!")
+
+	log.Println("Impersonator is ready!")
 	sendInAllChannels("Impersonator is ready!")
-	log.Println("Impersonator is ready")
 
 	defer func() {
 		if err := client.Disconnect(context.TODO()); err != nil {
